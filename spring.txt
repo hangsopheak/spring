@@ -1,0 +1,38 @@
+
+Spring Framework
+
+The Spring Framework is a Java platform that provides comprehensive infrastructure support for developing Java applications. Spring handles the infrastructure so you can focus on your application.
+Spring enables you to build applications from "plain old Java objects" (POJOs) and to apply enterprise services non-invasively to POJOs. This capability applies to the Java SE programming model and to full and partial Java EE.
+
+
+DI & Inversion of Control
+These are the design patterns that are used to remove dependency from the programming code. They make the code easier to test and maintain. 
+
+Advantage of Dependency Injection:
+
+- makes the code loosely coupled so easy to maintain
+- makes the code easy to test
+
+
+Advantages of Spring Framework
+
+1 - Predefined Templates
+Spring framework provides templates for JDBC, Hibernate, JPA etc. technologies. So there is no need to write too much code.
+
+2 -  Loose Coupling : dependency injection
+3 - Easy to test
+The Dependency Injection makes easier to test the application. The EJB or Struts application require server to run the application but Spring framework doesn't require server.
+
+4 - Lightweight : 
+Spring framework is lightweight because of its POJO implementation. The Spring Framework doesn't force the programmer to inherit any class or implement any interface. That is why it is said non-invasive.
+
+
+5) Fast Development
+
+The Dependency Injection feature of Spring Framework and it support to various frameworks makes the easy development of JavaEE application.
+6) Powerful abstraction
+
+It provides powerful abstraction to JavaEE specifications such as JMS, JDBC, JPA and JTA.
+7) Declarative support
+
+It provides declarative support for caching, validation, transactions and formatting.

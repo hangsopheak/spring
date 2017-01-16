@@ -11,3 +11,7 @@ GET http://localhost:8080/api/cagetoires/v1/{id}
 POST 
 DELETE
 PUT
+
+
+
+Ref : http://viralpatel.net/blogs/spring-4-mvc-rest-example-json/

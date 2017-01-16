@@ -7,8 +7,6 @@ public class MainJavaConfigurationBase {
 
     @SuppressWarnings("resource")
     public static void main(String[] args) {
-        
-        
         /**Test java code Configruation*/
         ApplicationContext appContext = new AnnotationConfigApplicationContext(TestConfiguration.class);
         TestDomain testObject = (TestDomain) appContext.getBean("testDomain");

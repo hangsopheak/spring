@@ -196,7 +196,7 @@ Always use these annotations over concrete classes; not over interfaces.
 
 =============
 
-
+com.rupp.spring.dao
 EmployeeDAO.java and EmployeeDAOImpl.java
 
 public interface EmployeeDAO 
@@ -217,17 +217,19 @@ public class EmployeeDAOImpl implements EmployeeDAO
     }
 }
 
-EmployeeManager.java and EmployeeManagerImpl.java
+com.rupp.spring.service
+
+EmployeeService.java and EmployeeServiceImpl.java
 
 
-public interface EmployeeManager 
+public interface EmployeeService 
 {
     public EmployeeDTO createNewEmployee();
 }
  
  
-@Service ("employeeManager")
-public class EmployeeManagerImpl implements EmployeeManager
+@Service ("employeeService")
+public class EmployeeServiceImpl implements EmployeeService
 {
     @Autowired
     EmployeeDAO dao;
@@ -237,18 +239,20 @@ public class EmployeeManagerImpl implements EmployeeManager
         return dao.createNewEmployee();
     }
 }
+package com.rupp.spring.controller
 EmployeeController.java
 @Controller ("employeeController")
 public class EmployeeController 
 {
-        @Autowired
-    EmployeeManager manager;
+    @Autowired
+    private EmployeeService servuce;
      
     public EmployeeDTO createNewEmployee()
     {
         return manager.createNewEmployee();
     }
 }
+com.rupp.spring.dto
 
 EmployeeDTO.java
 public class EmployeeDTO {
@@ -288,6 +292,12 @@ public class EmployeeDTO {
     }
 }
 
+@Configuration
+@ComponentScan(value = {"com.rupp.spring.dao", "com.rupp.spring.controller", "com.rupp.spring.service"})
+public class MvcConfig {
+
+}
+
 TestSpringContext.java
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
@@ -298,14 +308,10 @@ public class TestSpringContext
 {
     public static void main(String[] args) 
     {
-        ApplicationContext context = new ClassPathXmlApplicationContext("applicationContext.xml");
- 
-        //EmployeeManager manager = (EmployeeManager) context.getBean(EmployeeManager.class);
-         
-        //OR this will also work
-         
+        final AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(MvcConfig.class);
+
         EmployeeController controller = (EmployeeController) context.getBean("employeeController");
-         
+
         System.out.println(controller.createNewEmployee());
     }
 }

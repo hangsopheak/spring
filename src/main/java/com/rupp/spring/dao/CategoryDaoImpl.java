@@ -1,30 +1,46 @@
 package com.rupp.spring.dao;
 
-import java.util.ArrayList;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.Date;
 import java.util.List;
 
+import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
 import com.rupp.spring.domain.DCategory;
 
 @Repository
-public class CategoryDaoImpl {
-    // Dummy database. Initialize with some dummy values.
-    private static List<DCategory> categories = new ArrayList<>();
-
-    static {
-        categories.add(new DCategory(101L, "Restaurant"));
-        categories.add(new DCategory(201L, "Food and Drink"));
-        categories.add(new DCategory(301L, "Out Door"));
+public class CategoryDaoImpl implements CategoryDao {
+    
+    private JdbcTemplate jdbcTemplate;
+    
+    public CategoryDaoImpl() {
+        jdbcTemplate = new JdbcTemplate(DBCP2DataSourceUtils.getDataSource());
     }
-
     /**
      * Returns list of categories from dummy database.
      * 
      * @return list of categories
      */
     public List<DCategory> list() {
-        return categories;
+        final String sql = "select * from category";
+        //List<DCategory> list = this.jdbcTemplate.queryForList(sql,DCategory.class);
+        List<DCategory> list = this.jdbcTemplate.query(sql, new RowMapper<DCategory>() {
+
+            @Override
+            public DCategory mapRow(ResultSet rs, int paramInt) throws SQLException {
+                final DCategory domain = new DCategory();
+                domain.setId(rs.getLong("id"));
+                domain.setName(rs.getString("name"));
+                domain.setCreatedDate(new Date(rs.getTimestamp("createdDate").getTime()));
+                return domain;
+            }
+            
+        });
+        return list;
     }
 
     /**
@@ -35,13 +51,26 @@ public class CategoryDaoImpl {
      * @return dCategory object for given id
      */
     public DCategory get(Long id) {
+        final String sql = "select * from category where id = ?";
+        
+        try {
+            //select for object
+            final DCategory obj = jdbcTemplate.queryForObject(sql, new Object[] { id }, new RowMapper<DCategory>() {
 
-        for(DCategory c : categories) {
-            if (c.getId().equals(id)) {
-                return c;
-            }
+                @Override
+                public DCategory mapRow(ResultSet rs, int paramInt) throws SQLException {
+                    final DCategory domain = new DCategory();
+                    domain.setId(rs.getLong("id"));
+                    domain.setName(rs.getString("name"));
+                    domain.setCreatedDate(new Date(rs.getTimestamp("createdDate").getTime()));
+                    return domain;
+                }
+            });
+            return obj;
+        } catch (EmptyResultDataAccessException e) {
+            System.out.println("NOT FOUND " + id + " in Table" );
+            return null;
         }
-        return null;
     }
 
     /**
@@ -52,28 +81,20 @@ public class CategoryDaoImpl {
      * @return dCategory object with updated id
      */
     public DCategory create(DCategory dCategory) {
-        dCategory.setId(System.currentTimeMillis());
-        categories.add(dCategory);
+        final String sql = "INSERT INTO category (name) VALUES (?)";
+        jdbcTemplate.update(sql, new Object[] { dCategory.getName() });
         return dCategory;
     }
 
     /**
-     * Delete the dCategory object from dummy database. If dCategory not found for given id, returns null.
-     * 
      * @param id
      *            the dCategory id
      * @return id of deleted dCategory object
      */
     public Long delete(Long id) {
-
-        for(DCategory c : categories) {
-            if (c.getId().equals(id)) {
-                categories.remove(c);
-                return id;
-            }
-        }
-
-        return null;
+        final String sql = "Delete from category where id =?";
+        int result = jdbcTemplate.update(sql, new Object[] { id });
+        return result == 1 ? id : null;
     }
 
     /**
@@ -83,18 +104,12 @@ public class CategoryDaoImpl {
      * @param dCategory
      * @return dCategory object with id
      */
-    public DCategory update(Long id, DCategory dCategory) {
+    public DCategory update(DCategory dCategory) {
 
-        for(DCategory c : categories) {
-            if (c.getId().equals(id)) {
-                dCategory.setId(c.getId());
-                categories.remove(c);
-                categories.add(dCategory);
-                return dCategory;
-            }
-        }
+        final String sql = "UPDATE category set name =? where id=?";
+        int result = jdbcTemplate.update(sql, new Object[] { dCategory.getName() , dCategory.getId()});
+        return result == 1 ? dCategory : null;
 
-        return null;
     }
 
 }

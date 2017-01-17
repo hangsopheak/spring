@@ -33,6 +33,7 @@ public class CategoryController {
         return service.list();
     }
 
+    //@RequestMapping(value = "/v1/{id}", method = RequestMethod.GET)
     @GetMapping("/v1/{id}")
     public ResponseEntity<DCategory> getDCategory(@PathVariable("id") Long id) {
 
@@ -44,6 +45,7 @@ public class CategoryController {
         return new ResponseEntity<>(category, HttpStatus.OK);
     }
 
+    //@RequestMapping(value = "/v1", method = RequestMethod.POST)
     @PostMapping(value = "/v1")
     public ResponseEntity<DCategory> createDCategory(@RequestBody DCategory category) {
 
@@ -52,6 +54,7 @@ public class CategoryController {
         return new ResponseEntity<>(category, HttpStatus.OK);
     }
 
+    //@RequestMapping(value = "/v1/{id}", method = RequestMethod.DELETE)
     @DeleteMapping("/v1/{id}")
     public ResponseEntity deleteDCategory(@PathVariable Long id) {
 
@@ -62,7 +65,7 @@ public class CategoryController {
         return new ResponseEntity<>(id, HttpStatus.OK);
 
     }
-
+    //@RequestMapping(value = "/v1/{id}", method = RequestMethod.PUT)
     @PutMapping("/v1/{id}")
     public ResponseEntity updateDCategory(@PathVariable Long id, @RequestBody DCategory category) {
 

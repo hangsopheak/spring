@@ -5,14 +5,14 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.rupp.spring.dao.CategoryDaoImpl;
+import com.rupp.spring.dao.CategoryDao;
 import com.rupp.spring.domain.DCategory;
 
 @Service("categorySevice")
 public class CategoryServiceImpl implements CategoryService {
 
     @Autowired
-    private CategoryDaoImpl dao;
+    private CategoryDao dao;
     
     @Override
     public List<DCategory> list() {
@@ -36,9 +36,11 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public DCategory update(Long id, DCategory dCategory) {
-        return dao.update(id, dCategory);
+        
+        if (dao.get(id) == null) {
+            return null;
+        }
+        dCategory.setId(id);
+        return dao.update(dCategory);
     }
-
-  
-
 }

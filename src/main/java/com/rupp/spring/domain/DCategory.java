@@ -14,10 +14,12 @@ public class DCategory {
     private String name;
     private Date createdDate;
     
+    public DCategory() {
+        
+    }
     public DCategory(Long id, String name) {
         this.id = id;
         this.name = name;
-        createdDate = new Date();
     }
     /**
      * @return the id

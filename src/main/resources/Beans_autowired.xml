@@ -7,11 +7,11 @@
     http://www.springframework.org/schema/context
     http://www.springframework.org/schema/context/spring-context-3.0.xsd">
     
+   <bean id="testDomain" class="com.rupp.spring.bean.TestDomain"/>
    <context:annotation-config/>
 
    <!-- Definition for textEditor bean without constructor-arg  -->
    <bean id="myService" class="com.rupp.spring.service.MyService">
    </bean>
     <!-- scope by default signgleton prototype, request, session, global-session  -->
-   <bean id="testDomainss" class="com.rupp.spring.bean.TestDomain"/>
 </beans>

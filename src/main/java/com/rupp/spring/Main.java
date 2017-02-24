@@ -15,5 +15,6 @@ public class Main {
         EmployeeController controller = (EmployeeController) context.getBean("employeeController");
 
         System.out.println(controller.createNewEmployee());
+        context.close();
     }
 }
